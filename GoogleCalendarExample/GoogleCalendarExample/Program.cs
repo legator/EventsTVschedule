@@ -26,22 +26,92 @@ namespace GoogleCalendarExample
         static void Main(string[] args)
         {
             Console.WriteLine("Configuration for app");
-            set_app_config("<id>", "<secret>", "<key>");
+            set_app_config("35229438944.apps.googleusercontent.com","8ohxvvPfOTAAAZtaIhUUH2pF","<key>");
             Console.WriteLine("Authorization");
             Auth();
-            Console.WriteLine("Calendar List");
+            Load();
+            //
+            /*Console.WriteLine("Calendar list")
+            foreach (CalendarListEntry item in CalendarList)
+            {
+                Console.WriteLine(item.Id);
+            }*/
+            Console.WriteLine("calendar event");
+            GetCalendarEvent("faitas.oleg@gmail.com");
+            Console.WriteLine(CalendarEvent.Count.ToString());
+            /*
+            Events r = service.Events.List("faitas.oleg@gmail.com").Fetch();
+            var t = service.Events.List("faitas.oleg@gmail.com");
+            int icount = r.Items.Count;
+            while (true)
+	        {
+	            string page = r.NextPageToken;
+                if (!String.IsNullOrEmpty(r.NextPageToken))
+                {
+                    t.PageToken = page;
+                    r = t.Fetch();
+                    foreach (Event item in r.Items)
+                    {
+                        Console.WriteLine(item.Summary);
+                    }
+                    Console.ReadLine();
+                }
+                else break;
+	        }
+            */
+            /*
+            Console.WriteLine("future event");
+            GetFutureCalendarEvent("faitas.oleg@gmail.com");
+            foreach (Event item in FutureCalendarEvent)
+            {
+                Console.WriteLine(item.Summary);
+            }
+            */
+            Console.WriteLine("day event");
+            GetDayCalendarEvent("faitas.oleg@gmail.com",DateTime.Now);
+            foreach (Event item in CalendarDayEvent)
+            {
+                Console.WriteLine(item.Summary);
+            }
+            /*Console.WriteLine("All day event");
+            GetAllDayCalendarEvent("faitas.oleg@gmail.com");
+            foreach (Event item in CalendarAllDayEvent)
+            {
+                EventDateTime evd = item.Start;
+                if (evd == null)
+                {
+                    Console.WriteLine("null");
+                }
+                else
+                    Console.WriteLine(evd.Date);
+            }*/
+            /*Console.WriteLine("Get instance event");
+            GetInstanceCalendarEvent("faitas.oleg@gmail.com");
+            string s = "";
+            foreach (Event item in InstanceCalendarEvent)
+            {
+                if (s != item.Summary)
+                {
+                    s = item.Summary;
+                    Console.WriteLine(item.Summary+"-"+item.Start.Date);
+                }
+                
+            }*/
+            //
+
+            /*Console.WriteLine("Calendar List");
             var result = service.CalendarList.List().Fetch();
             foreach (Google.Apis.Calendar.v3.Data.CalendarListEntry item in result.Items)
 	        {
                 Console.WriteLine(item.Id + " >>> " + item.Summary + " >>> " + item.Description);
 	        }
             Console.WriteLine("Get Google Calendar event");
-            foreach (Google.Apis.Calendar.v3.Data.Event item in GetEvents("<calendar id>").Items)
+            foreach (Google.Apis.Calendar.v3.Data.Event item in GetEvents("faitas.oleg@gmail.com").Items)
             {
                 Console.WriteLine(item.Id + " >>> " + item.Summary + " >>> " + item.Description + " >>> " + item.Start.DateTime);
             }
             Console.WriteLine("Get future events");
-            foreach (Google.Apis.Calendar.v3.Data.Event item in GetEvents("<calendar id>").Items)
+            foreach (Google.Apis.Calendar.v3.Data.Event item in GetEvents("faitas.oleg@gmail.com").Items)
             {
                 if (item.Start.DateTime != null)
                 {
@@ -52,9 +122,9 @@ namespace GoogleCalendarExample
                 }
             }
             Console.WriteLine("Get instance events");
-            foreach (Google.Apis.Calendar.v3.Data.Event item in GetEvents("<calendar id>").Items)
+            foreach (Google.Apis.Calendar.v3.Data.Event item in GetEvents("faitas.oleg@gmail.com").Items)
             {
-                Events res = GetInstanceEvent("<calendar id>",item.Id);
+                Events res = GetInstanceEvent("faitas.oleg@gmail.com", item.Id);
                 try
                 {
                     if (res.Items.Count>1)
@@ -62,7 +132,7 @@ namespace GoogleCalendarExample
                         Console.WriteLine(item.Summary + " >>> " + item.Description+" >>>"+res.Items.Count+res.Items[res.Items.Count-1].End.DateTime);
                     }
                 }catch(Exception){}
-            }
+            }*/
             Console.WriteLine("\nFinish!!!");
             Console.ReadLine();
         }
@@ -117,8 +187,30 @@ namespace GoogleCalendarExample
 
         private static Google.Apis.Calendar.v3.Data.Events GetEvents(string calendarid)
         {
+            /*
             var result = service.Events.List(calendarid).Fetch();
             return result;
+            */
+            Events es = new Events();
+            var result = service.Events.List(calendarid).Fetch();
+            var listrequest = service.Events.List(calendarid);
+            es = result;
+
+            while (true)
+            {
+                string page = result.NextPageToken;
+                if (!String.IsNullOrEmpty(result.NextPageToken))
+                {
+                    listrequest.PageToken = page;
+                    result = listrequest.Fetch();
+                    foreach (Event item in result.Items)
+                    {
+                        es.Items.Add(item);
+                    }
+                }
+                else break;
+            }
+            return es;
         }
 
         private static DateTime ConvertDateTime(EventDateTime evtime)
@@ -164,6 +256,111 @@ namespace GoogleCalendarExample
         {
             var result = service.Events.Instances(calendarid, eventid).Fetch();
             return result;
+        }
+
+
+        public static IList<CalendarListEntry> CalendarList { get; set; }
+        public static IList<Event> CalendarEvent { get; set; }
+        public static IList<Event> CalendarAllDayEvent { get; set; }
+        public static List<Event> FutureCalendarEvent { get; set; }
+        public static List<Event> CalendarDayEvent { get; set; }
+        public static List<Event> InstanceCalendarEvent { get; set; }
+        public static List<Event> FutureInstanceCalendarEvent { get; set; }
+
+        public static void Load()
+        {
+            CalendarList = service.CalendarList.List().Fetch().Items;
+        }
+
+        public static void GetCalendarEvent(string calendarid)
+        {
+            CalendarEvent = GetEvents(calendarid).Items;
+        }
+
+        public static void GetAllDayCalendarEvent(string calendarid)
+        {
+            List<Event> evt = new List<Event>();
+            foreach (Google.Apis.Calendar.v3.Data.Event item in GetEvents(calendarid).Items)
+            {
+                if (item.Start.DateTime == null)
+                {
+                    evt.Add(item);
+                }
+            }
+            CalendarAllDayEvent = evt;
+        }
+
+        public static void GetFutureCalendarEvent(string calendarid)
+        {
+            List<Event> fevent = new List<Event>();
+            foreach (Google.Apis.Calendar.v3.Data.Event item in GetEvents(calendarid).Items)
+            {
+                if (item.Start.DateTime != null)
+                {
+                    //TimeSpan diff = date2.Subtract(date1);
+                    if (ConvertDateTime(item.Start).CompareTo(DateTime.Now) > 0 && ConvertDateTime(item.End).CompareTo(DateTime.Now) < 0)
+                    {
+                        fevent.Add(item);
+                    }
+                }
+            }
+            GetFutureInstanceCalendarEvent(calendarid);
+            foreach (Event item in FutureInstanceCalendarEvent)
+            {
+                fevent.Add(item);
+            }
+            FutureCalendarEvent = fevent;
+        }
+
+        public static void GetDayCalendarEvent(string calendarid, DateTime dt)
+        {
+            List<Event> evt = new List<Event>();
+            foreach (Google.Apis.Calendar.v3.Data.Event item in GetEvents(calendarid).Items)
+            {
+                if (item.Start.DateTime != null)
+                {
+                    if (ConvertDateTime(item.Start).ToShortDateString() == dt.ToShortDateString())
+                    {
+                        evt.Add(item);
+                    }
+                }
+            }
+            CalendarDayEvent = evt;
+        }
+
+        public static void GetInstanceCalendarEvent(string calendarid)
+        {
+            List<Event> evt = new List<Event>();
+            foreach (Event item in GetEvents(calendarid).Items)
+            {
+                Events res = GetInstanceEvent(calendarid, item.Id);
+                try
+                {
+                    foreach (Event it in res.Items)
+                    {
+                        evt.Add(it);
+                    }
+                }
+                catch (Exception) { }
+            }
+            InstanceCalendarEvent = evt;
+        }
+
+        public static void GetFutureInstanceCalendarEvent(string calendarid)
+        {
+            List<Event> evt = new List<Event>();
+            GetInstanceCalendarEvent(calendarid);
+            foreach (Event item in InstanceCalendarEvent)
+            {
+                if (item.Start.DateTime != null)
+                {
+                    if (ConvertDateTime(item.Start).CompareTo(DateTime.Now) > 0 && ConvertDateTime(item.End).CompareTo(DateTime.Now) < 0)
+                    {
+                        evt.Add(item);
+                    }
+                }
+            }
+            FutureInstanceCalendarEvent = evt;
         }
     }
 }
