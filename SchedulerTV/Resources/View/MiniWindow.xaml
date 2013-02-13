@@ -1,0 +1,42 @@
+﻿<Window x:Class="SchedulerTV.Resources.View.MiniWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MiniWindow" Height="60" Width="450"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent" AllowDrop="True">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Rectangle Fill="Black" Margin="-1,0,-1,-1" Opacity="0.8" Grid.RowSpan="2">
+            <Rectangle.Effect>
+                <BlurEffect Radius="15" />
+            </Rectangle.Effect>
+        </Rectangle>
+        <Rectangle Fill="White" Grid.RowSpan="2"/>
+
+        <Path Data="{StaticResource AppIcon}" Fill="{StaticResource AccentColor}" ToolTip="{Binding Title_App}"  Margin="5,5,0,0"  Height="20" Width="20" Stretch="Fill" HorizontalAlignment="Left"/>
+
+        <StackPanel Orientation="Horizontal" Margin="30,7,0,0">
+            <TextBlock x:Name="HourTime" Text="00" FontSize="24" FontFamily="../Resources/Font/#AndroidClock-Large"/>
+            <TextBlock x:Name="PointTime" Text=":" FontSize="24" FontFamily="../Resources/Font/#AndroidClock-Large"/>
+            <TextBlock x:Name="MinTime" Text="00"  FontSize="24" FontFamily="../Resources/Font/#AndroidClock-Large"/>
+        </StackPanel>
+        
+        <StackPanel Orientation="Vertical"  Margin="95,0,105,0">
+            <TextBlock x:Name="EventTitle" Text="{Binding Event_Title}" FontSize="10"  HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <StackPanel Orientation="Horizontal" Height="23">
+                <TextBlock x:Name="EventDescription" FontSize="8" Text="{Binding Event_description}" HorizontalAlignment="Left" Width="145" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
+                <TextBlock x:Name="EventDateTime" FontSize="8" Text="{Binding Event_DateTime}" HorizontalAlignment="Right" Width="80" Margin="3,0,0,0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
+            </StackPanel>
+        </StackPanel>
+        
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top"  Margin="0,15,10,0">
+            <ToggleButton Click="AccountConnectClick" Template="{DynamicResource ConnectButton}" ToolTip="{Binding Account_Connect}"  Margin="0,0,10,0" IsChecked="{Binding IsConnect, Mode=OneWay}"  Width="5" Height="5"/>
+            <ToggleButton Click="PinApp" Template="{DynamicResource PinButton}"  ToolTip="{Binding Pin_app}"    Margin="0,0,10,0" IsChecked="{Binding IsPin, Mode=OneWay}" Width="10" Height="10"/>
+            <Button Click="ModeApp"   Style="{DynamicResource MiniModeButtonStyle}" ToolTip="{Binding Mode_app}"   Margin="0,0,10,0"/>
+            <Button Click="MinApp" Style="{DynamicResource MinimizeButtonStyle}" ToolTip="{Binding Min_app}" Margin="0,0,10,0"/>
+            <Button Click="CloseApp"  Style="{DynamicResource CloseButtonStyle}"    ToolTip="{Binding Close_app}" />
+        </StackPanel>
+    </Grid>
+</Window>

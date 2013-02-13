@@ -1,0 +1,60 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ControlTemplate x:Key="PinButton" TargetType="{x:Type ToggleButton}">
+        <Grid Background="#00000000" RenderTransformOrigin="0.5,0.5" Margin="-3">
+            <Path Name="Icon" Data="{StaticResource Pin315dIcon}" Fill="{StaticResource AccentColor}" Stretch="Uniform" Opacity="0.8" Margin="3" />
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="UIElement.IsMouseOver" Value="True">
+                <Setter TargetName="Icon" Property="UIElement.Opacity" Value="1" />
+            </Trigger>
+            <Trigger Property="ToggleButton.IsChecked" Value="True">
+                <Setter Value="{StaticResource PinIcon}" TargetName="Icon" Property="Path.Data" />
+            </Trigger>
+            <Trigger Property="UIElement.IsEnabled" Value="False">
+                <Setter TargetName="Icon" Property="UIElement.Opacity" Value="0.2" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <ControlTemplate x:Key="ConnectButton" TargetType="{x:Type ToggleButton}">
+        <StackPanel Background="#00000000" RenderTransformOrigin="0.5,0.5" Margin="-3" Orientation="Horizontal"  HorizontalAlignment="Right" VerticalAlignment="Top">
+            <Path Name="Icon" Data="{StaticResource DisConnectIcon}" Fill="{StaticResource AccentColor}" Stretch="Uniform" Opacity="0.8" RenderTransformOrigin="0.5,0.5">
+                <Path.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="180"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Path.RenderTransform>
+            </Path>
+        </StackPanel>
+        <ControlTemplate.Triggers>
+            <Trigger Property="UIElement.IsMouseOver" Value="True">
+                <Setter TargetName="Icon" Property="UIElement.Opacity" Value="1" />
+            </Trigger>
+            <Trigger Property="ToggleButton.IsChecked" Value="True">
+                <Setter Value="{StaticResource ConnectIcon}" TargetName="Icon" Property="Path.Data" />
+            </Trigger>
+            <Trigger Property="UIElement.IsEnabled" Value="False">
+                <Setter TargetName="Icon" Property="UIElement.Opacity" Value="0.2" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <ControlTemplate x:Key="SearchTButton" TargetType="{x:Type ToggleButton}">
+        <StackPanel Background="#00000000" RenderTransformOrigin="0.5,0.5" Margin="-3" Orientation="Horizontal"  HorizontalAlignment="Right" VerticalAlignment="Top">
+            <Path Name="Icon" Data="{DynamicResource PauseIcon}" Fill="{StaticResource AccentColor}" Stretch="Uniform" Opacity="0.8" RenderTransformOrigin="0.5,0.5"/>
+        </StackPanel>
+        <ControlTemplate.Triggers>
+            <Trigger Property="UIElement.IsMouseOver" Value="True">
+                <Setter TargetName="Icon" Property="UIElement.Opacity" Value="1" />
+            </Trigger>
+            <Trigger Property="ToggleButton.IsChecked" Value="True">
+                <Setter Value="{StaticResource PlayIcon}" TargetName="Icon" Property="Path.Data" />
+            </Trigger>
+            <Trigger Property="UIElement.IsEnabled" Value="False">
+                <Setter TargetName="Icon" Property="UIElement.Opacity" Value="0.2" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+</ResourceDictionary>

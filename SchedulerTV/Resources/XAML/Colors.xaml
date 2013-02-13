@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="WhiteColor" Color="White"/>
+    <SolidColorBrush x:Key="AccentColor" Color="#FF5B7FA6"/>
+    <SolidColorBrush x:Key="MeridianButtonOverBrush" Color="#FF4a739d"/>
+    <SolidColorBrush x:Key="MeridianButtonPressBrush" Color="#FF406386"/>
+    <SolidColorBrush x:Key="NormalItemBackground" Color="Transparent"/>
+    <SolidColorBrush x:Key="SelectedItemForeground" Color="White"/>
+    <SolidColorBrush x:Key="HotItemBackground" Color="#f0f0f0"/>
+</ResourceDictionary>

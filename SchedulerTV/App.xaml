@@ -1,0 +1,21 @@
+﻿<Application x:Class="SchedulerTV.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="Resources/View/MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/XAML/Colors.xaml"/>
+                <ResourceDictionary Source="Resources/XAML/Geometry.xaml"/>
+                <ResourceDictionary Source="Resources/XAML/Button.xaml"/>
+                <ResourceDictionary Source="Resources/XAML/ToggleButton.xaml"/>
+                <ResourceDictionary Source="Resources/XAML/Tab.xaml"/>
+                <ResourceDictionary Source="Resources/XAML/TextBlock.xaml"/>
+                <ResourceDictionary Source="Resources/XAML/ComboBox.xaml"/>
+                <ResourceDictionary Source="Resources/XAML/ListBox.xaml"/>
+                <ResourceDictionary Source="Resources/XAML/ListBoxStyle.xaml"/>
+                <ResourceDictionary Source="Resources/XAML/Canvas.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
